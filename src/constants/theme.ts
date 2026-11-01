@@ -69,3 +69,35 @@ export const Radius = {
 } as const;
 
 export const MaxContentWidth = 800;
+
+export const Typography = {
+  heading: {
+    fontSize: 30,
+    fontWeight: '700' as const,
+    letterSpacing: -0.8,
+  },
+  subtitle: {
+    fontSize: 20,
+    fontWeight: '600' as const,
+    letterSpacing: -0.3,
+  },
+  body: {
+    fontSize: 16,
+    fontWeight: '400' as const,
+    lineHeight: 24,
+  },
+  bodySmall: {
+    fontSize: 14,
+    fontWeight: '400' as const,
+    lineHeight: 21,
+  },
+  label: {
+    fontSize: 13,
+    fontWeight: '600' as const,
+    letterSpacing: 0.2,
+  },
+  caption: {
+    fontSize: 12,
+    fontWeight: '400' as const,
+  },
+} as const;
