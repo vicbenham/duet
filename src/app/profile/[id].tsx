@@ -7,7 +7,7 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -16,11 +16,36 @@ import AppButton from '@/components/ui/app-button';
 import { Colors, Radius, Spacing } from '@/constants/theme';
 import { mockProfiles } from '@/features/discovery/data/mock-profiles';
 
+import {
+    Dimensions,
+    FlatList,
+    NativeScrollEvent,
+    NativeSyntheticEvent,
+} from 'react-native';
+
 export default function PublicProfileScreen() {
     const { id } = useLocalSearchParams<{ id: string }>();
-    const [photoVisible, setPhotoVisible] = useState(false);
-
     const profile = mockProfiles.find((item) => item.id === id);
+
+    const [photoVisible, setPhotoVisible] = useState(false);
+    const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+    const galleryRef = useRef<FlatList<string>>(null);
+    const screenWidth = Dimensions.get('window').width;
+
+    const openGallery = () => {
+        setCurrentPhotoIndex(0);
+        setPhotoVisible(true);
+    };
+
+    const handleGalleryScroll = (
+        event: NativeSyntheticEvent<NativeScrollEvent>
+    ) => {
+        const index = Math.round(
+            event.nativeEvent.contentOffset.x / screenWidth
+        );
+
+        setCurrentPhotoIndex(index);
+    };
 
     if (!profile) {
         return (
@@ -57,14 +82,14 @@ export default function PublicProfileScreen() {
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.content}
             >
-                <Pressable onPress={() => setPhotoVisible(true)}>
+                <Pressable onPress={openGallery}>
                     <Image
-                        source={{ uri: profile.image }}
+                        source={{ uri: profile.photos[0] }}
                         style={styles.photo}
                     />
                     <View style={styles.photoHint}>
                         <AppText variant="caption" color="#FFFFFF">
-                            Agrandir la photo
+                            Voir les photos
                         </AppText>
                     </View>
                 </Pressable>
@@ -135,15 +160,51 @@ export default function PublicProfileScreen() {
                         </AppText>
                     </Pressable>
 
-                    <Image
-                        source={{ uri: profile.image }}
-                        style={styles.fullscreenPhoto}
-                        resizeMode="contain"
+                    <FlatList
+                        ref={galleryRef}
+                        data={profile.photos}
+                        horizontal
+                        pagingEnabled
+                        snapToInterval={screenWidth}
+                        snapToAlignment="start"
+                        decelerationRate="fast"
+                        disableIntervalMomentum
+                        showsHorizontalScrollIndicator={false}
+                        bounces={false}
+                        keyExtractor={(item, index) => `${item}-${index}`}
+                        getItemLayout={(_, index) => ({
+                            length: screenWidth,
+                            offset: screenWidth * index,
+                            index,
+                        })}
+                        onMomentumScrollEnd={handleGalleryScroll}
+                        renderItem={({ item }) => (
+                            <View style={{ width: screenWidth, flex: 1 }}>
+                                <Image
+                                    source={{ uri: item }}
+                                    style={{ width: screenWidth, height: '100%' }}
+                                    resizeMode="contain"
+                                />
+                            </View>
+                        )}
                     />
 
-                    <AppText variant="caption" color="#FFFFFF">
-                        {profile.firstName}
-                    </AppText>
+                    <View style={styles.galleryIndicator}>
+                        <AppText variant="bodySmall" color="#FFFFFF">
+                            {currentPhotoIndex + 1} / {profile.photos.length}
+                        </AppText>
+                        <View style={styles.galleryDots}>
+                            {profile.photos.map((_, index) => (
+                                <View
+                                    key={index}
+                                    style={[
+                                        styles.galleryDot,
+                                        index === currentPhotoIndex && styles.activeDot,
+                                    ]}
+                                />
+                            ))}
+                        </View>
+                    </View>
                 </View>
             </Modal>
         </SafeAreaView>
@@ -214,23 +275,29 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.light.backgroundElement,
         borderRadius: Radius.medium,
     },
+    notFound: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: Spacing.four,
+        gap: Spacing.three,
+    },
     photoModal: {
         flex: 1,
         backgroundColor: '#000000',
-        alignItems: 'center',
         justifyContent: 'center',
-        padding: Spacing.three,
-        gap: Spacing.three,
+        alignItems: 'center',
+        overflow: 'hidden',
     },
     fullscreenPhoto: {
         width: '100%',
-        height: '85%',
+        height: '100%',
     },
     closeButton: {
         position: 'absolute',
         top: 55,
         right: 24,
-        zIndex: 1,
+        zIndex: 10,
         width: 42,
         height: 42,
         alignItems: 'center',
@@ -238,11 +305,25 @@ const styles = StyleSheet.create({
         borderRadius: Radius.full,
         backgroundColor: 'rgba(255,255,255,0.2)',
     },
-    notFound: {
-        flex: 1,
+    galleryIndicator: {
+        position: 'absolute',
+        bottom: 45,
+        alignSelf: 'center',
         alignItems: 'center',
-        justifyContent: 'center',
-        padding: Spacing.four,
-        gap: Spacing.three,
+        gap: Spacing.two,
+    },
+    galleryDots: {
+        flexDirection: 'row',
+        gap: Spacing.two,
+    },
+    galleryDot: {
+        width: 7,
+        height: 7,
+        borderRadius: Radius.full,
+        backgroundColor: 'rgba(255,255,255,0.4)',
+    },
+    activeDot: {
+        width: 20,
+        backgroundColor: '#FFFFFF',
     },
 });

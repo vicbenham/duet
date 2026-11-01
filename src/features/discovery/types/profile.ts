@@ -12,5 +12,5 @@ export interface Profile {
         question: string;
         answer: string;
     };
-    image: string;
+    photos: string[];
 }

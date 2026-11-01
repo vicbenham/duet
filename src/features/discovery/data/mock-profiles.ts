@@ -1,3 +1,4 @@
+
 import { Profile } from '../types/profile';
 
 export const mockProfiles: Profile[] = [
@@ -15,8 +16,11 @@ export const mockProfiles: Profile[] = [
             question: 'Un dimanche idéal ?',
             answer: 'Un marché le matin, une exposition l’après-midi et un bon dîner.',
         },
-        image:
+        photos: [
             'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900',
+            'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=900',
+            'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900',
+        ],
     },
     {
         id: '2',
@@ -32,8 +36,11 @@ export const mockProfiles: Profile[] = [
             question: 'La chose que tu aimerais apprendre ?',
             answer: 'Jouer du piano et enfin maîtriser quelques morceaux de jazz.',
         },
-        image:
+        photos: [
             'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=900',
+            'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=900',
+            'https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=900',
+        ],
     },
     {
         id: '3',
@@ -49,8 +56,11 @@ export const mockProfiles: Profile[] = [
             question: 'Ton prochain voyage ?',
             answer: 'Le Japon, pour ses paysages, sa cuisine et sa culture.',
         },
-        image:
+        photos: [
             'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900',
+            'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900',
+            'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=900',
+        ],
     },
     {
         id: 'profile-4',
@@ -66,7 +76,11 @@ export const mockProfiles: Profile[] = [
             question: 'La destination qui m’a le plus marquée ?',
             answer: 'Lisbonne, pour son ambiance, ses petites rues et ses couchers de soleil.',
         },
-        image: 'https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=900',
+        photos: [
+            'https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=900',
+            'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=900',
+            'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=900',
+        ],
     },
     {
         id: 'profile-5',
@@ -82,7 +96,10 @@ export const mockProfiles: Profile[] = [
             question: 'Ce qui me rend heureuse ?',
             answer: 'Un appareil photo, une belle lumière et une journée sans programme.',
         },
-        image: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=900',
+        photos: [
+            'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=900',
+            'https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=900',
+            'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900',
+        ],
     },
-
 ];

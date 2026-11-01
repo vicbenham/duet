@@ -20,7 +20,7 @@ export default function ProfileCard({ profile, onPress }: ProfileCardProps) {
     return (
         <Pressable style={styles.container} onPress={onPress}>
             <ImageBackground
-                source={{ uri: profile.image }}
+                source={{ uri: profile.photos[0] }}
                 style={styles.card}
                 imageStyle={styles.image}
             >

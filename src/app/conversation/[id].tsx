@@ -147,7 +147,7 @@ export default function ConversationScreen() {
                         })}
                     >
                         <Image
-                            source={{ uri: activeMatch.profile.image }}
+                            source={{ uri: activeMatch.profile.photos[0] }}
                             style={styles.avatar}
                         />
 

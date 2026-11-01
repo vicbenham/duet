@@ -28,7 +28,7 @@ export function InboxRequestCard({
     return (
         <View style={styles.card}>
             <Pressable onPress={openProfile}>
-                <Image source={{ uri: profile.image }} style={styles.image} />
+                <Image source={{ uri: profile.photos[0] }} style={styles.image} />
             </Pressable>
 
             <View style={styles.info}>

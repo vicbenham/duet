@@ -3,7 +3,7 @@ export interface InboxProfile {
     firstName: string;
     age: number;
     city: string;
-    image: string;
+    photos: string[];
 }
 
 export interface LikeRequest {
