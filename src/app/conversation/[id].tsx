@@ -22,13 +22,21 @@ import { MessageInput } from '@/features/conversation/components/message-input';
 
 export default function ConversationScreen() {
     const { id } = useLocalSearchParams<{ id: string }>();
-    const { activeMatch, setActiveMatch } = useMatch();
+    const {
+        activeMatch,
+        setActiveMatch,
+        reportedConversationIds,
+    } = useMatch();
 
     const [messages, setMessages] = useState<ChatMessage[]>(() =>
         mockMessages
             .filter((message) => message.conversationId === id)
             .sort((a, b) => b.sentAt.localeCompare(a.sentAt))
     );
+
+    const alreadyReported = activeMatch
+        ? reportedConversationIds.includes(activeMatch.conversationId)
+        : false;
 
     if (!activeMatch || activeMatch.conversationId !== id) {
         return (
@@ -87,12 +95,25 @@ export default function ConversationScreen() {
                     onPress: endEncounter,
                 },
                 {
-                    text: 'Signaler ce profil',
+                    text: alreadyReported
+                        ? 'Profil déjà signalé'
+                        : 'Signaler ce profil',
                     onPress: () => {
-                        Alert.alert(
-                            'Signalement',
-                            'Cette fonctionnalité sera bientôt disponible.'
-                        );
+                        if (alreadyReported) {
+                            Alert.alert(
+                                'Signalement déjà effectué',
+                                'Tu as déjà signalé cette conversation.'
+                            );
+                            return;
+                        }
+
+                        router.push({
+                            pathname: '/conversation/report',
+                            params: {
+                                profileName: activeMatch.profile.firstName,
+                                conversationId: activeMatch.conversationId,
+                            },
+                        });
                     },
                 },
                 {
@@ -118,17 +139,25 @@ export default function ConversationScreen() {
                         <Text style={styles.backButtonText}>‹</Text>
                     </Pressable>
 
-                    <Image
-                        source={{ uri: activeMatch.profile.image }}
-                        style={styles.avatar}
-                    />
+                    <Pressable
+                        style={styles.headerProfile}
+                        onPress={() => router.push({
+                            pathname: '/profile/[id]',
+                            params: { id: activeMatch.profile.id },
+                        })}
+                    >
+                        <Image
+                            source={{ uri: activeMatch.profile.image }}
+                            style={styles.avatar}
+                        />
 
-                    <View style={styles.headerInformation}>
-                        <Text style={styles.name}>
-                            {activeMatch.profile.firstName}
-                        </Text>
-                        <Text style={styles.status}>Votre rencontre</Text>
-                    </View>
+                        <View style={styles.headerInformation}>
+                            <Text style={styles.name}>
+                                {activeMatch.profile.firstName}
+                            </Text>
+                            <Text style={styles.status}>Votre rencontre</Text>
+                        </View>
+                    </Pressable>
 
                     <Pressable
                         style={styles.menuButton}
@@ -228,5 +257,11 @@ const styles = StyleSheet.create({
         fontSize: 28,
         color: Colors.light.text,
         lineHeight: 32,
+    },
+    headerProfile: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: Spacing.two,
     },
 });

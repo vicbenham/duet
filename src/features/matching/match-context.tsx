@@ -14,6 +14,8 @@ import type { ActiveMatch } from '@/features/inbox/types/inbox';
 interface MatchContextType {
     activeMatch: ActiveMatch | null;
     setActiveMatch: Dispatch<SetStateAction<ActiveMatch | null>>;
+    reportedConversationIds: string[];
+    markConversationReported: (conversationId: string) => void;
 }
 
 const MatchContext = createContext<MatchContextType | undefined>(undefined);
@@ -23,12 +25,26 @@ interface MatchProviderProps {
 }
 
 export function MatchProvider({ children }: MatchProviderProps) {
-    const [activeMatch, setActiveMatch] = useState<ActiveMatch | null>(
-        mockActiveMatch
-    );
+    const [activeMatch, setActiveMatch] = useState<ActiveMatch | null>(mockActiveMatch);
+    const [reportedConversationIds, setReportedConversationIds] = useState<string[]>([]);
+
+    const markConversationReported = (conversationId: string) => {
+        setReportedConversationIds((current) =>
+            current.includes(conversationId)
+                ? current
+                : [...current, conversationId]
+        );
+    };
 
     return (
-        <MatchContext.Provider value={{ activeMatch, setActiveMatch }}>
+        <MatchContext.Provider
+            value={{
+                activeMatch,
+                setActiveMatch,
+                reportedConversationIds,
+                markConversationReported,
+            }}
+        >
             {children}
         </MatchContext.Provider>
     );

@@ -14,6 +14,7 @@ import ProfileCard from '@/features/discovery/components/profile-card';
 import { mockProfiles } from '@/features/discovery/data/mock-profiles';
 import { Colors, Spacing } from '@/constants/theme';
 import {useMatch} from "@/features/matching/match-context";
+import {router} from "expo-router";
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.25;
@@ -127,7 +128,10 @@ export default function DiscoverScreen() {
                         {...panResponder.panHandlers}
                         style={[styles.card, animatedStyle]}
                     >
-                        <ProfileCard profile={currentProfile} />
+                        <ProfileCard
+                            profile={currentProfile}
+                            onPress={() => router.push(`/profile/${currentProfile.id}`)}
+                        />
                     </Animated.View>
 
                     <DiscoveryActions

@@ -1,4 +1,6 @@
+
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { router } from 'expo-router';
 
 import { Colors, Radius } from '@/constants/theme';
 import { LikeRequest } from '../types/inbox';
@@ -16,15 +18,27 @@ export function InboxRequestCard({
                                  }: InboxRequestCardProps) {
     const { profile } = request;
 
+    const openProfile = () => {
+        router.push({
+            pathname: '/profile/[id]',
+            params: { id: profile.id },
+        });
+    };
+
     return (
         <View style={styles.card}>
-            <Image source={{ uri: profile.image }} style={styles.image} />
+            <Pressable onPress={openProfile}>
+                <Image source={{ uri: profile.image }} style={styles.image} />
+            </Pressable>
 
             <View style={styles.info}>
-                <Text style={styles.name}>
-                    {profile.firstName}, {profile.age}
-                </Text>
-                <Text style={styles.city}>{profile.city}</Text>
+                <Pressable onPress={openProfile}>
+                    <Text style={styles.name}>
+                        {profile.firstName}, {profile.age}
+                    </Text>
+                    <Text style={styles.city}>{profile.city}</Text>
+                </Pressable>
+
                 <Text style={styles.receivedAt}>{request.receivedAt}</Text>
 
                 <View style={styles.actions}>

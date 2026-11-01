@@ -1,4 +1,10 @@
-import { ImageBackground, StyleSheet, View } from 'react-native';
+
+import {
+    ImageBackground,
+    Pressable,
+    StyleSheet,
+    View,
+} from 'react-native';
 
 import AppText from '@/components/ui/app-text';
 import { Colors, Radius, Spacing } from '@/constants/theme';
@@ -7,61 +13,67 @@ import { Profile } from '../types/profile';
 
 interface ProfileCardProps {
     profile: Profile;
+    onPress: () => void;
 }
 
-export default function ProfileCard({ profile }: ProfileCardProps) {
+export default function ProfileCard({ profile, onPress }: ProfileCardProps) {
     return (
-        <ImageBackground
-            source={{ uri: profile.image }}
-            style={styles.card}
-            imageStyle={styles.image}
-        >
-            <View style={styles.overlay}>
-                <View style={styles.topInfo}>
-                    <AppText variant="bodySmall" color="#FFFFFF">
-                        {profile.city} · {profile.distance} km
-                    </AppText>
-                </View>
-
-                <View style={styles.profileInfo}>
-                    <AppText variant="heading" color="#FFFFFF">
-                        {profile.firstName}, {profile.age}
-                    </AppText>
-
-                    <AppText variant="bodySmall" color="#FFFFFF">
-                        {profile.occupation}
-                    </AppText>
-
-                    <AppText variant="body" color="#FFFFFF">
-                        {profile.bio}
-                    </AppText>
-
-                    <View style={styles.interests}>
-                        {profile.commonInterests.map((interest) => (
-                            <View key={interest} style={styles.interestTag}>
-                                <AppText variant="caption" color={Colors.light.text}>
-                                    {interest}
-                                </AppText>
-                            </View>
-                        ))}
+        <Pressable style={styles.container} onPress={onPress}>
+            <ImageBackground
+                source={{ uri: profile.image }}
+                style={styles.card}
+                imageStyle={styles.image}
+            >
+                <View style={styles.overlay}>
+                    <View style={styles.topInfo}>
+                        <AppText variant="bodySmall" color="#FFFFFF">
+                            {profile.city} · {profile.distance} km
+                        </AppText>
                     </View>
 
-                    <View style={styles.prompt}>
-                        <AppText variant="label" color="#FFFFFF">
-                            {profile.prompt.question}
+                    <View style={styles.profileInfo}>
+                        <AppText variant="heading" color="#FFFFFF">
+                            {profile.firstName}, {profile.age}
                         </AppText>
 
                         <AppText variant="bodySmall" color="#FFFFFF">
-                            {profile.prompt.answer}
+                            {profile.occupation}
                         </AppText>
+
+                        <AppText variant="body" color="#FFFFFF">
+                            {profile.bio}
+                        </AppText>
+
+                        <View style={styles.interests}>
+                            {profile.commonInterests.map((interest) => (
+                                <View key={interest} style={styles.interestTag}>
+                                    <AppText variant="caption" color={Colors.light.text}>
+                                        {interest}
+                                    </AppText>
+                                </View>
+                            ))}
+                        </View>
+
+                        <View style={styles.prompt}>
+                            <AppText variant="label" color="#FFFFFF">
+                                {profile.prompt.question}
+                            </AppText>
+
+                            <AppText variant="bodySmall" color="#FFFFFF">
+                                {profile.prompt.answer}
+                            </AppText>
+                        </View>
                     </View>
                 </View>
-            </View>
-        </ImageBackground>
+            </ImageBackground>
+        </Pressable>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
     card: {
         flex: 1,
         justifyContent: 'space-between',

@@ -52,4 +52,37 @@ export const mockProfiles: Profile[] = [
         image:
             'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900',
     },
+    {
+        id: 'profile-4',
+        firstName: 'Julie',
+        age: 26,
+        city: 'Paris',
+        distance: 3,
+        occupation: 'Cheffe de projet',
+        bio: 'J’aime les voyages spontanés, les longues conversations et découvrir de nouvelles adresses. Toujours partante pour une sortie culturelle ou un week-end improvisé.',
+        interests: ['Voyages', 'Photographie', 'Cinéma', 'Cuisine'],
+        commonInterests: ['Voyages', 'Cinéma'],
+        prompt: {
+            question: 'La destination qui m’a le plus marquée ?',
+            answer: 'Lisbonne, pour son ambiance, ses petites rues et ses couchers de soleil.',
+        },
+        image: 'https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=900',
+    },
+    {
+        id: 'profile-5',
+        firstName: 'Sarah',
+        age: 28,
+        city: 'Montreuil',
+        distance: 7,
+        occupation: 'Photographe',
+        bio: 'Passionnée par les belles images, les rencontres inattendues et les petits plaisirs du quotidien. Je suis toujours à la recherche de nouvelles inspirations.',
+        interests: ['Photographie', 'Art', 'Musique', 'Randonnée'],
+        commonInterests: ['Photographie', 'Art'],
+        prompt: {
+            question: 'Ce qui me rend heureuse ?',
+            answer: 'Un appareil photo, une belle lumière et une journée sans programme.',
+        },
+        image: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=900',
+    },
+
 ];
