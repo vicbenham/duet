@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+    Alert,
     Image,
     KeyboardAvoidingView,
     Platform,
@@ -21,7 +22,7 @@ import { MessageInput } from '@/features/conversation/components/message-input';
 
 export default function ConversationScreen() {
     const { id } = useLocalSearchParams<{ id: string }>();
-    const { activeMatch } = useMatch();
+    const { activeMatch, setActiveMatch } = useMatch();
 
     const [messages, setMessages] = useState<ChatMessage[]>(() =>
         mockMessages
@@ -54,6 +55,54 @@ export default function ConversationScreen() {
         setMessages((current) => [newMessage, ...current]);
     };
 
+    const endEncounter = () => {
+        Alert.alert(
+            'Mettre fin à la rencontre ?',
+            'Cette action mettra fin à votre conversation. Vous pourrez tous les deux retrouver la découverte, mais cette rencontre ne sera plus accessible.',
+            [
+                {
+                    text: 'Annuler',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Mettre fin',
+                    style: 'destructive',
+                    onPress: () => {
+                        setActiveMatch(null);
+                        router.replace('/(tabs)/discover');
+                    },
+                },
+            ]
+        );
+    };
+
+    const openActionMenu = () => {
+        Alert.alert(
+            'Options',
+            undefined,
+            [
+                {
+                    text: 'Mettre fin à la rencontre',
+                    style: 'destructive',
+                    onPress: endEncounter,
+                },
+                {
+                    text: 'Signaler ce profil',
+                    onPress: () => {
+                        Alert.alert(
+                            'Signalement',
+                            'Cette fonctionnalité sera bientôt disponible.'
+                        );
+                    },
+                },
+                {
+                    text: 'Annuler',
+                    style: 'cancel',
+                },
+            ]
+        );
+    };
+
     return (
         <SafeAreaView style={styles.screen} edges={['top']}>
             <KeyboardAvoidingView
@@ -80,6 +129,13 @@ export default function ConversationScreen() {
                         </Text>
                         <Text style={styles.status}>Votre rencontre</Text>
                     </View>
+
+                    <Pressable
+                        style={styles.menuButton}
+                        onPress={openActionMenu}
+                    >
+                        <Text style={styles.menuButtonText}>⋯</Text>
+                    </Pressable>
                 </View>
 
                 <View style={styles.messages}>
@@ -161,5 +217,16 @@ const styles = StyleSheet.create({
     backLink: {
         color: Colors.light.primary,
         fontWeight: '600',
+    },
+    menuButton: {
+        width: 40,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    menuButtonText: {
+        fontSize: 28,
+        color: Colors.light.text,
+        lineHeight: 32,
     },
 });
