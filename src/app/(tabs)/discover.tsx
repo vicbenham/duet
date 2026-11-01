@@ -13,6 +13,7 @@ import DiscoveryActions from '@/features/discovery/components/discovery-actions'
 import ProfileCard from '@/features/discovery/components/profile-card';
 import { mockProfiles } from '@/features/discovery/data/mock-profiles';
 import { Colors, Spacing } from '@/constants/theme';
+import {useMatch} from "@/features/matching/match-context";
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.25;
@@ -24,6 +25,8 @@ export default function DiscoverScreen() {
     const currentProfile = mockProfiles[currentIndex];
 
     const currentProfileRef = useRef(currentProfile);
+
+    const { activeMatch } = useMatch();
 
     useEffect(() => {
         currentProfileRef.current = currentProfile;
@@ -107,7 +110,18 @@ export default function DiscoverScreen() {
             title="duet."
             subtitle="Et si une belle rencontre commençait ici ?"
         >
-            {currentProfile ? (
+            {activeMatch ? (
+                <View style={styles.emptyState}>
+                    <AppText variant="subtitle">
+                        Et si tu prenais le temps ?
+                    </AppText>
+
+                    <AppText color={Colors.light.textSecondary}>
+                        Tu as une belle rencontre à découvrir. Pour le moment,
+                        les autres profils attendront.
+                    </AppText>
+                </View>
+            ) : currentProfile ? (
                 <View style={styles.content}>
                     <Animated.View
                         {...panResponder.panHandlers}

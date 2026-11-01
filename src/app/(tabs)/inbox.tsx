@@ -8,20 +8,14 @@ import { InboxSection } from '@/features/inbox/components/inbox-section';
 import { InboxRequestCard } from '@/features/inbox/components/inbox-request-card';
 import { ActiveMatchCard } from '@/features/inbox/components/active-match-card';
 
-import {
-    mockRequests,
-    mockActiveMatch,
-} from '@/features/inbox/data/mock-inbox';
+import { mockRequests } from '@/features/inbox/data/mock-inbox';
 
-import {
-    ActiveMatch,
-    LikeRequest,
-} from '@/features/inbox/types/inbox';
+import { useMatch } from '@/features/matching/match-context';
+import type { ActiveMatch, LikeRequest } from '@/features/inbox/types/inbox';
 
 export default function InboxScreen() {
     const [requests, setRequests] = useState<LikeRequest[]>(mockRequests);
-    const [activeMatch, setActiveMatch] =
-        useState<ActiveMatch | null>(mockActiveMatch);
+    const { activeMatch, setActiveMatch } = useMatch();
 
     const acceptRequest = (request: LikeRequest) => {
         if (activeMatch !== null) {

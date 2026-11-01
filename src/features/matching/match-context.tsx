@@ -1,0 +1,45 @@
+
+import {
+    createContext,
+    useContext,
+    useState,
+    type Dispatch,
+    type ReactNode,
+    type SetStateAction,
+} from 'react';
+
+import { mockActiveMatch } from '@/features/inbox/data/mock-inbox';
+import type { ActiveMatch } from '@/features/inbox/types/inbox';
+
+interface MatchContextType {
+    activeMatch: ActiveMatch | null;
+    setActiveMatch: Dispatch<SetStateAction<ActiveMatch | null>>;
+}
+
+const MatchContext = createContext<MatchContextType | undefined>(undefined);
+
+interface MatchProviderProps {
+    children: ReactNode;
+}
+
+export function MatchProvider({ children }: MatchProviderProps) {
+    const [activeMatch, setActiveMatch] = useState<ActiveMatch | null>(
+        mockActiveMatch
+    );
+
+    return (
+        <MatchContext.Provider value={{ activeMatch, setActiveMatch }}>
+            {children}
+        </MatchContext.Provider>
+    );
+}
+
+export function useMatch() {
+    const context = useContext(MatchContext);
+
+    if (!context) {
+        throw new Error('useMatch must be used within a MatchProvider');
+    }
+
+    return context;
+}
