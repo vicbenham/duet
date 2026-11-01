@@ -1,4 +1,4 @@
-import { Conversation, LikeRequest } from '../types/inbox';
+import { ActiveMatch, LikeRequest } from '../types/inbox';
 
 export const mockRequests: LikeRequest[] = [
     {
@@ -25,31 +25,4 @@ export const mockRequests: LikeRequest[] = [
     },
 ];
 
-export const mockConversations: Conversation[] = [
-    {
-        id: 'conversation-1',
-        profile: {
-            id: 'profile-6',
-            firstName: 'Clara',
-            age: 27,
-            city: 'Paris',
-            image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900',
-        },
-        lastMessage: 'J\'aime beaucoup cette idée de voyage !',
-        lastMessageAt: '14:32',
-        unreadCount: 2,
-    },
-    {
-        id: 'conversation-2',
-        profile: {
-            id: 'profile-7',
-            firstName: 'Manon',
-            age: 25,
-            city: 'Vincennes',
-            image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=900',
-        },
-        lastMessage: 'Haha, complètement d’accord !',
-        lastMessageAt: 'Hier',
-        unreadCount: 0,
-    },
-];
+export const mockActiveMatch: ActiveMatch | null = null;

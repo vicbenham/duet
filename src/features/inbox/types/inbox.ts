@@ -12,10 +12,11 @@ export interface LikeRequest {
     receivedAt: string;
 }
 
-export interface Conversation {
+export interface ActiveMatch {
     id: string;
     profile: InboxProfile;
+    conversationId: string;
+    matchedAt: string;
     lastMessage: string;
     lastMessageAt: string;
-    unreadCount: number;
 }
