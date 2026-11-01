@@ -13,6 +13,8 @@ import { mockRequests } from '@/features/inbox/data/mock-inbox';
 import { useMatch } from '@/features/matching/match-context';
 import type { ActiveMatch, LikeRequest } from '@/features/inbox/types/inbox';
 
+import { router } from 'expo-router';
+
 export default function InboxScreen() {
     const [requests, setRequests] = useState<LikeRequest[]>(mockRequests);
     const { activeMatch, setActiveMatch } = useMatch();
@@ -42,10 +44,7 @@ export default function InboxScreen() {
     };
 
     const openMatch = (match: ActiveMatch) => {
-        Alert.alert(
-            'Votre rencontre',
-            `Votre conversation avec ${match.profile.firstName} sera bientôt disponible.`
-        );
+        router.push(`/conversation/${match.conversationId}`);
     };
 
     return (
